@@ -1,3 +1,4 @@
+// src/app.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
@@ -7,15 +8,16 @@ import { User } from './user/entities/user.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost', // corrected from 'localHost'
+      host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'krishna_001', // adjust if this is your actual password
-      database: 'Eventbooking',  // make sure this DB exists
-      entities:[User],
-      synchronize: true,     // Only for dev, disable in prod
+      password: 'krishna_001',
+      database: 'Eventbooking',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      migrations: ['dist/migrations/*.js'],
+      synchronize: false, // Turned off to use migrations
+      migrationsRun: true,
     }),
-    TypeOrmModule.forFeature([]),
     UserModule,
   ],
 })

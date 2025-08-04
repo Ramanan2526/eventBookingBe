@@ -9,7 +9,8 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
+  create(@Body() createUserDto: CreateUserDto) {
+    console.log('Received user:', createUserDto);
     return this.userService.create(createUserDto);
   }
 }

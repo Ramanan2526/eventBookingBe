@@ -12,10 +12,15 @@ export class UserService {
     private userRepo: Repository<User>,
   ) {}
 
-  async create(dto: CreateUserDto): Promise<User> {
+  async create(dto: CreateUserDto) {
     try {
       const user = this.userRepo.create(dto);
-      return await this.userRepo.save(user);
+      const result =  await this.userRepo.save(user);
+    if(result){
+      return {
+        message: "User created successfully"
+      };
+    }
     } catch (error) {
       throw new InternalServerErrorException('Something went wrong');
     }
