@@ -1,6 +1,7 @@
-// data-source.ts (in root)
+// data-source.ts (at project root)
 import { DataSource } from 'typeorm';
 import { User } from './src/user/entities/user.entity';
+import { Event } from './src/events/entities/event.entity';
 
 export default new DataSource({
   type: 'mysql',
@@ -9,6 +10,6 @@ export default new DataSource({
   username: 'root',
   password: 'krishna_001',
   database: 'Eventbooking',
-  entities: [User],
-  migrations: ['dist/migrations/*.js'],
+  entities: [User, Event],
+  migrations: ['src/migrations/*.ts'],
 });

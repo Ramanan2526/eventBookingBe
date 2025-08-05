@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Event } from '../../events/entities/event.entity';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
@@ -13,4 +13,7 @@ export class User {
 
   @Column()
   password: string; // password hashing can be added later
+
+  @OneToMany(() => Event, (event) => event.user)
+  events: Event[];
 }
