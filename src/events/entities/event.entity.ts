@@ -20,7 +20,10 @@ export class Event {
   eventDate: Date;
 
   @Column({ type: 'time' })
-  eventTime: string;
+  startTime: string;
+
+  @Column({ type: 'time' })
+  endTime: string;
 
   @Column({ type: 'varchar', length: 255 })
   eventVenue: string;

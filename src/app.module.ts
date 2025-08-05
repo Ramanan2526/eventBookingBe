@@ -16,7 +16,7 @@ import { EventsModule } from './events/events.module';
       password: 'krishna_001',
       database: 'Eventbooking',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      migrations: ['dist/migrations/*.js'],
+      migrations: ['dist/migrations/*.ts'],
       synchronize: false, // Turned off to use migrations
       migrationsRun: true,
     }),

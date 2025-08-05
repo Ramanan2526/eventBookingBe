@@ -19,9 +19,11 @@ export class CreateEventDto {
   @IsDateString()
   eventDate: string;
 
-  @ApiProperty({ example: '15:30', description: 'Time of the event (HH:mm)' })
   @IsString()
-  eventTime: string;
+  startTime: string;
+
+  @IsString()
+  endTime: string;
 
   @ApiProperty({ example: 'Chennai Trade Center' })
   @IsString()
@@ -40,4 +42,8 @@ export class CreateEventDto {
 
   @ApiProperty({ example: 499.99 })
   price: number;
+
+  @ApiProperty({example:1})
+  @IsOptional()
+  userId?: number
 }

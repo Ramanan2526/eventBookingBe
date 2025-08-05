@@ -1,26 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Event } from './entities/event.entity';
+import { Repository } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
+import { paginate, PaginateQuery, Paginated } from 'nestjs-paginate';
 
 @Injectable()
 export class EventsService {
-  create(createEventDto: CreateEventDto) {
-    return 'This action adds a new event';
-  }
+  constructor(@InjectRepository(Event) private eventRepo: Repository<Event>,
+              @InjectRepository(User) private userRepo: Repository<User>){}
 
-  findAll() {
-    return `This action returns all events`;
-  }
+  async createEvent(dto: CreateEventDto) {
+  try {
+    // const user = await this.userRepo.findOne({ where: { id: dto.userId } });
+    // if (!user) {
+    //   throw new NotFoundException(`No user found with ID ${dto.userId}`);
+    // }
 
-  findOne(id: number) {
-    return `This action returns a #${id} event`;
-  }
+    const event = this.eventRepo.create({
+      ...dto,
+      // user, // assign user relation
+    });
 
-  update(id: number, updateEventDto: UpdateEventDto) {
-    return `This action updates a #${id} event`;
-  }
+    const savedEvent = await this.eventRepo.save(event);
 
-  remove(id: number) {
-    return `This action removes a #${id} event`;
+    return {
+      message: 'Event created successfully!',
+      eventId: savedEvent.id, 
+    };
+  } catch (error) {
+    throw new BadRequestException(error.message || 'Something went wrong');
   }
+}
+
+async getAll(query: PaginateQuery): Promise<Paginated<Event>> {
+  return paginate(query, this.eventRepo, {
+    sortableColumns: ['eventName', 'eventDate'],
+    searchableColumns: ['eventName'],
+    defaultSortBy: [['eventDate', 'DESC']],
+    // where: { isDelete: false }, // optional
+  });
+}
+
 }
